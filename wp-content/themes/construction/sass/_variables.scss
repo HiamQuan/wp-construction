@@ -1,5 +1,20 @@
-$text-color: #333333 !default;
-$text-color-dark: #1e1e1e !default;
-$base-color: #ffffff !default;
-$background-color: #f9f9f9 !default;
-$highlight-color: #ffd95a !default;
+:root {
+  --text-color: #333333;
+  --text-color-dark: #1e1e1e;
+  --text-color-white: #ffffff;
+  --background-color: #ffffff;
+  --background-color-dark: #1e1e1e;
+  --font-family-base: "Montserrat", sans-serif;
+  --font-family-heading: "Montserrat", sans-serif;
+  --font-weight-base: 400;
+  --font-weight-bold: 700;
+  --font-size-base: 16px;
+  --font-size-small: 14px;
+  --font-size-h1: 40px;
+  --font-size-h2: 32px;
+  --font-size-h3: 24px;
+  --font-size-h4: 20px;
+  --font-size-h5: 18px;
+  --font-size-h6: 16px;
+  --line-height-base: 1.5;
+}

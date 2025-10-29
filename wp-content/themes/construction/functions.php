@@ -50,6 +50,8 @@ function construction_setup() {
 	register_nav_menus(
 		array(
 			'menu-1' => esc_html__( 'Primary', 'construction' ),
+			'menu-2' => esc_html__( 'Header', 'construction' ),
+			'menu-3' => esc_html__( 'Footer', 'construction' ),
 		)
 	);
 
