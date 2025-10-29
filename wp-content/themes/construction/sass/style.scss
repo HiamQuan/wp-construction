@@ -1,7 +1,6 @@
-@import "./variables";
-@import "./mixins";
-@import "./main";
-
+@use "./variables" as *;
+@use "./mixins" as *;
+@use "./main";
 
 body {
   background: $background-color;
