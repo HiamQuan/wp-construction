@@ -1,15 +1,5 @@
-@use "./variables" as *;
-@use "./mixins" as *;
-@use "./main";
-
-body {
-  background: $background-color;
-  color: $text-color;
-}
-
-h1 {
-  color: $text-color-dark;
-  a {
-    color: $text-color-dark;
-  }
-}
+@import "./variables";
+@import "./mixins";
+@import "./main";
+@import "./header.scss";
+@import "./footer.scss";
