@@ -1,0 +1,186 @@
+@mixin media_mobile() {
+  @media only screen and (max-width: 992px) {
+    @content;
+  }
+}
+
+@mixin media_tablet() {
+  @media only screen and (min-width: 993px) and (max-width: 1439px) {
+    @content;
+  }
+}
+
+@mixin media_desktop() {
+  @media only screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+// .wrapper {
+//     margin: 0 auto;
+//     width: 100%;
+//     @include screen('tablet') {
+//       width: 90%;
+//     }
+
+//     @include screen('desktop') {
+//       width: 85%;
+//     }
+// }
+
+// .wrapper {
+//     @include screen('(min-width: 1367px)') {
+//       width: 1280px;
+//     }
+// }
+
+@mixin text-shorten($numLines: 1) {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  @supports (-webkit-line-clamp: $numLines) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: $numLines;
+    -webkit-box-orient: vertical;
+  }
+}
+
+// @include text-shorten(3);
+
+$start: 0;
+$end: 30;
+
+@for $i from $start through $end {
+  .pl-#{$i} {
+    padding-left: #{$i}px;
+  }
+  .pr-#{$i} {
+    padding-right: #{$i}px;
+  }
+  .pb-#{$i} {
+    padding-bottom: #{$i}px;
+  }
+  .pt-#{$i} {
+    padding-top: #{$i}px;
+  }
+  .ml-#{$i} {
+    margin-left: #{$i}px;
+  }
+  .mr-#{$i} {
+    margin-right: #{$i}px;
+  }
+  .mb-#{$i} {
+    margin-bottom: #{$i}px;
+  }
+  .mt-#{$i} {
+    margin-top: #{$i}px;
+  }
+  .fz-#{$i} {
+    font-size: #{$i}px;
+  }
+}
+$maxFontWeight: 1000;
+
+$fw: 100;
+@while $fw < $maxFontWeight {
+  .fw-#{$fw} {
+    font-weight: $fw;
+  }
+  $fw: $fw + 100;
+}
+
+@mixin center_flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin center_pos {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin line_clamp($line) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}
+
+@mixin position($pos: absolute, $left: 0, $right: 0, $top: 0, $bottom: 0) {
+  position: $pos;
+  top: $top;
+  left: $left;
+  right: $right;
+  bottom: $bottom;
+}
+
+// function
+@function sum($numbers...) {
+  $sum: 0;
+  @each $number in $numbers {
+    $sum: $sum + $number;
+  }
+  @return $sum;
+}
+
+// .micro {
+//   width: sum(50px, 30px, 100px);
+// }
+
+@function calc_v2($size) {
+  @return calc(100% - $size);
+}
+
+@mixin noto-sans(
+  $font-size: 14px,
+  $letter-spacing: 1.4px,
+  $color: var(--c-white),
+  $line-height: 2.44,
+  $font-weight: 400
+) {
+  font-family: "Noto Sans JP", sans-serif;
+  font-weight: $font-weight;
+  font-size: $font-size;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+  white-space: pre-line;
+  color: $color;
+}
+
+@mixin avenir(
+  $font-size: 14px,
+  $letter-spacing: 1.4px,
+  $color: var(--c-white),
+  $line-height: 2.44,
+  $font-weight: 400
+) {
+  font-family: "Avenir";
+  font-weight: $font-weight;
+  font-size: $font-size;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+  white-space: pre-line;
+  color: $color;
+}
+
+@mixin nunito-sans(
+  $font-size: 14px,
+  $letter-spacing: 1.4px,
+  $color: var(--c-black),
+  $line-height: 2.44,
+  $font-weight: 400
+) {
+  font-family: "Nunito Sans";
+  font-weight: $font-weight;
+  font-size: $font-size;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+  color: $color;
+}
