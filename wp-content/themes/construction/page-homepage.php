@@ -384,50 +384,10 @@ get_header();
             <p>Hãy để lại thông tin, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
         </div>
         <div class="contact-grid">
-            <form class="contact-form" action="#" method="post">
-                <div class="form-row two-cols">
-                    <div class="form-group">
-                        <label for="contact_name">Họ và tên</label>
-                        <input id="contact_name" type="text" placeholder="Nguyễn Văn A">
-                    </div>
-                    <div class="form-group">
-                        <label for="contact_phone">Số điện thoại</label>
-                        <input id="contact_phone" type="text" placeholder="090 123 4567">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="contact_project">Loại dự án</label>
-                        <div class="select-wrapper">
-                            <select id="contact_project">
-                                <option>-- Chọn loại dự án --</option>
-                                <option>Nhà phố</option>
-                                <option>Biệt thự</option>
-                                <option>Nội thất</option>
-                            </select>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="contact_email">Email</label>
-                        <input id="contact_email" type="email" placeholder="Nhập địa chỉ email của bạn">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="contact_message">Nội dung</label>
-                        <textarea id="contact_message" rows="6" placeholder="Nhập nội dung cần tư vấn"></textarea>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary contact-submit">Gửi yêu cầu</button>
-                </div>
-            </form>
+            <?php echo do_shortcode('[contact-form-7 id="2b633c3" title="Contact form 1"]'); ?>
             <aside class="contact-info">
                 <h3>Thông tin liên hệ</h3>
-                <ul class="contact-info-list">
+                <ul class="contact-info-list">  
                     <li>
                         <span class="info-icon"><i class="fa-solid fa-location-dot"></i></span>
                         <div>
