@@ -67,6 +67,13 @@
 </footer>
 </div>
 
+<!-- Dark/Light Mode Toggle Button -->
+<button id="dark-mode-toggle" aria-label="Chuyển sang chế độ tối" title="Chuyển sang chế độ tối">
+	<i class="fas fa-moon"></i>
+</button>
+
+<script src="<?php echo esc_url(get_template_directory_uri()); ?>/js/animation.js"></script>
+
 <?php wp_footer(); ?>
 
 </body>
