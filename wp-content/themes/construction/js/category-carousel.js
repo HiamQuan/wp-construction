@@ -5,7 +5,7 @@
  */
 (function ($) {
 	'use strict';
-	$(function () {
+	$(document).ready(function () {
 		// Category carousel
 		if ($('#category-swiper').length) {
 			$('#category-swiper').owlCarousel({
