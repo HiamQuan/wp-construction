@@ -235,19 +235,9 @@
           }
         }
       }
-    }
 
-    .category-swiper {
-      padding: 0 16px 48px;
-      overflow: visible;
-
-      @include media_mobile {
-        padding: 0 8px 40px;
-      }
-
-      .swiper-slide {
-        height: auto;
-        display: flex;
+      .owl-stage-outer {
+        overflow: unset;
       }
     }
 
@@ -260,10 +250,7 @@
       width: 100%;
       position: relative;
       display: flex;
-
-      &:hover {
-        transform: translateY(-5px);
-      }
+      cursor: pointer;
 
       .category-item-img {
         position: relative;

@@ -154,35 +154,41 @@ get_header();
             <h2>Những công trình đã thực hiện</h2>
             <p>Chúng tôi tự hào với hơn 200 dự án đã hoàn thành, đáp ứng đúng yêu cầu và vượt trên mong đợi của khách hàng.</p>
         </div>
-        <div class="featured-project-list owl-carousel" id="featured-project-swiper">
-            <div class="featured-project-item">
-                <div class="featured-project-item-img">
-                    <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-1.png" alt="Dự án 1">
-                </div>
-                <div class="featured-project-item-content">
-                    <span class="featured-project-category">Tòa nhà văn phòng</span>
-                    <h3>Tòa nhà HNM Tower</h3>
-                    <p>Hà Nội, Việt Nam</p>
-                </div>
-            </div>
-            <div class="featured-project-item">
-                <div class="featured-project-item-img">
-                    <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-2.png" alt="Dự án 2">
-                </div>
-                <div class="featured-project-item-content">
-                    <span class="featured-project-category">Chung cư cao cấp</span>
-                    <h3>Minh Residence</h3>
-                    <p>TP. Hồ Chí Minh, Việt Nam</p>
+        <div class="featured-project-list owl-carousel owl-theme" id="featured-project-swiper">
+            <div class="item">
+                <div class="featured-project-item">
+                    <div class="featured-project-item-img">
+                        <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-1.png" alt="Dự án 1">
+                    </div>
+                    <div class="featured-project-item-content">
+                        <span class="featured-project-category">Tòa nhà văn phòng</span>
+                        <h3>Tòa nhà HNM Tower</h3>
+                        <p>Hà Nội, Việt Nam</p>
+                    </div>
                 </div>
             </div>
-            <div class="featured-project-item">
-                <div class="featured-project-item-img">
-                    <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-3.png" alt="Dự án 3">
+            <div class="item">
+                <div class="featured-project-item">
+                    <div class="featured-project-item-img">
+                        <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-2.png" alt="Dự án 2">
+                    </div>
+                    <div class="featured-project-item-content">
+                        <span class="featured-project-category">Chung cư cao cấp</span>
+                        <h3>Minh Residence</h3>
+                        <p>TP. Hồ Chí Minh, Việt Nam</p>
+                    </div>
                 </div>
-                <div class="featured-project-item-content">
-                    <span class="featured-project-category">Trung tâm thương mại</span>
-                    <h3>HNM Plaza</h3>
-                    <p>Đà Nẵng, Việt Nam</p>
+            </div>
+            <div class="item">
+                <div class="featured-project-item">
+                    <div class="featured-project-item-img">
+                        <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-3.png" alt="Dự án 3">
+                    </div>
+                    <div class="featured-project-item-content">
+                        <span class="featured-project-category">Trung tâm thương mại</span>
+                        <h3>HNM Plaza</h3>
+                        <p>Đà Nẵng, Việt Nam</p>
+                    </div>
                 </div>
             </div>
         </div>
