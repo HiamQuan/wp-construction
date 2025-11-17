@@ -1424,7 +1424,7 @@ p {
   transition: color 0.3s ease;
 }
 .site-header .header-wrapper .main-navigation .navbar-nav li a:hover {
-  color: var(--text-color-dark);
+  color: var(--text-color-primary-yellow);
 }
 
 .footer-container {
@@ -1495,7 +1495,7 @@ p {
   transition: color 0.3s ease;
 }
 .footer-container .footer-grid .footer-col a:hover {
-  color: var(--text-color-dark);
+  color: var(--text-color-primary-yellow);
 }
 .footer-container .footer-sep {
   height: 1px;
@@ -1806,6 +1806,10 @@ p {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s ease;
+}
+.top-page .category-section .category-item .category-item-img:hover img {
+  transform: scale(1.05);
 }
 .top-page .category-section .category-item .category-item-content {
   position: absolute;
@@ -2145,9 +2149,6 @@ p {
 .top-page .about-us-section .about-content .about-features .about-feature .about-feature-box::after {
   animation-delay: 0.3s;
 }
-.top-page .about-us-section .about-content .about-features .about-feature .about-feature-box:hover::before, .top-page .about-us-section .about-content .about-features .about-feature .about-feature-box:hover::after {
-  animation: vibrate-circle 0.6s ease-out infinite;
-}
 .top-page .about-us-section .about-content .about-features .about-feature .about-feature-box .about-feature-icon {
   position: absolute;
   top: 50%;
@@ -2163,6 +2164,7 @@ p {
   z-index: 10;
 }
 .top-page .about-us-section .about-content .about-features .about-feature .about-feature-box .about-feature-icon i {
+  transition: all 0.3s ease;
   color: var(--text-color-primary-yellow);
   font-size: 22px;
 }
@@ -2174,10 +2176,24 @@ p {
 }
 .top-page .about-us-section .about-content .about-features .about-feature .about-feature-text strong {
   font-weight: 600;
+  transition: all 0.3s ease;
 }
 .top-page .about-us-section .about-content .about-features .about-feature .about-feature-text span {
   font-weight: 400;
   font-size: var(--font-size-small);
+  transition: all 0.3s ease;
+}
+.top-page .about-us-section .about-content .about-features .about-feature:hover .about-feature-text strong {
+  color: var(--text-color-primary-yellow);
+}
+.top-page .about-us-section .about-content .about-features .about-feature:hover .about-feature-text span {
+  color: var(--text-color-primary-yellow);
+}
+.top-page .about-us-section .about-content .about-features .about-feature:hover .about-feature-box::before, .top-page .about-us-section .about-content .about-features .about-feature:hover .about-feature-box::after {
+  animation: vibrate-circle 0.6s ease-out infinite;
+}
+.top-page .about-us-section .about-content .about-features .about-feature:hover .about-feature-box .about-feature-icon i {
+  color: var(--text-color-line-yellow);
 }
 .top-page .about-us-section .about-content .about-link {
   color: var(--text-color-highlight);
@@ -2185,6 +2201,13 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  transition: all 0.3s ease;
+}
+.top-page .about-us-section .about-content .about-link:hover {
+  color: var(--text-color-white);
+}
+.top-page .about-us-section .about-content .about-link i {
+  transition: all 0.3s ease;
 }
 .top-page .about-info {
   background: var(--background-color);
@@ -2293,6 +2316,22 @@ p {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  transition: all 0.3s ease;
+}
+.top-page .testimonials-section .testimonial-item:hover {
+  background: var(--background-color-primary-yellow-30);
+}
+.top-page .testimonials-section .testimonial-item .testimonial-item-content {
+  transition: all 0.3s ease;
+}
+.top-page .testimonials-section .testimonial-item .testimonial-item-content:hover {
+  color: var(--text-color-primary-yellow);
+}
+.top-page .testimonials-section .testimonial-item .testimonial-item-content {
+  transition: all 0.3s ease;
+}
+.top-page .testimonials-section .testimonial-item .testimonial-item-content:hover {
+  color: var(--text-color-primary-yellow);
 }
 .top-page .testimonials-section .testimonial-rating {
   color: var(--text-color-primary-yellow);
@@ -2382,7 +2421,7 @@ p {
   transform: translateY(30px);
 }
 .top-page .process-section .process-item.animate-in {
-  animation: fadeInUp 1s ease-out forwards;
+  animation: fadeInUp 2s ease-out forwards;
   transition: transform 0.3s ease;
 }
 .top-page .process-section .process-item.animate-in:hover {
@@ -2409,8 +2448,27 @@ p {
 .top-page .process-section .process-item .process-item-icon .process-item-icon-bg {
   position: absolute;
   inset: 0;
-  background: var(--background-color-gray);
   border-radius: 50%;
+  overflow: visible;
+}
+.top-page .process-section .process-item .process-item-icon .process-item-icon-bg::before, .top-page .process-section .process-item .process-item-icon .process-item-icon-bg::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: var(--background-color-gray);
+  opacity: 0;
+  pointer-events: none;
+}
+.top-page .process-section .process-item .process-item-icon .process-item-icon-bg::after {
+  animation-delay: 0.3s;
+}
+.top-page .process-section .process-item .process-item-icon:hover .process-item-icon-bg::before, .top-page .process-section .process-item .process-item-icon:hover .process-item-icon-bg::after {
+  animation: vibrate-circle 0.6s ease-out infinite;
 }
 .top-page .process-section .process-item .process-item-icon .process-item-icon-inner {
   position: absolute;
