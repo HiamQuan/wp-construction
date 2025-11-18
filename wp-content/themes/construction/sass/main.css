@@ -47,6 +47,7 @@
   --font-size-h6: 16px;
   --line-height-base: 1.5;
   --box-shadow-base: 0 4px 6px 0 rgba(0, 0, 0, 0.1);
+  --box-shadow-1: rgba(0, 0, 0, 0.4);
 }
 
 .pl-0 {
@@ -1784,7 +1785,6 @@ p {
 }
 .top-page .category-section .category-item {
   background: transparent;
-  border-radius: 8px;
   overflow: hidden;
   box-shadow: var(--box-shadow-base);
   transition: transform 0.3s ease;
@@ -1799,7 +1799,25 @@ p {
   width: 100%;
   overflow: hidden;
   flex-shrink: 0;
-  filter: brightness(60%);
+}
+.top-page .category-section .category-item .category-item-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+}
+.top-page .category-section .category-item .category-item-img::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--box-shadow-1);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 .top-page .category-section .category-item .category-item-img img {
   width: 100%;
@@ -1808,31 +1826,63 @@ p {
   display: block;
   transition: transform 0.5s ease;
 }
-.top-page .category-section .category-item .category-item-img:hover img {
+.top-page .category-section .category-item:hover {
+  transform: translateY(-5px);
+}
+.top-page .category-section .category-item:hover .category-item-img::before {
+  opacity: 1;
+}
+.top-page .category-section .category-item:hover .category-item-img::after {
+  opacity: 0.3;
+}
+.top-page .category-section .category-item:hover .category-item-img img {
   transform: scale(1.05);
+}
+.top-page .category-section .category-item:hover .category-item-content {
+  opacity: 1;
+  transform: translateY(-20px);
+  visibility: visible;
+}
+.top-page .category-section .category-item:hover .category-item-content::after {
+  transform: scaleY(1);
 }
 .top-page .category-section .category-item .category-item-content {
   position: absolute;
-  bottom: 0;
+  bottom: -20px;
   left: 0;
   right: 0;
   z-index: 2;
-  background: var(--background-color-transparent);
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   min-height: 144px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
+}
+.top-page .category-section .category-item .category-item-content::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-color: var(--text-color-primary-yellow);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.4s ease 0.2s;
 }
 .top-page .category-section .category-item .category-item-content h3 {
   font-size: var(--font-size-h4);
   font-weight: var(--font-weight-bold);
-  color: var(--text-color);
+  color: var(--text-color-white);
   line-height: 1.4;
 }
 .top-page .category-section .category-item .category-item-content p {
   font-size: var(--font-size-base);
-  color: var(--text-color-dark);
+  color: var(--text-color-white);
 }
 .top-page .category-section .category-pagination {
   position: absolute;
@@ -1961,9 +2011,6 @@ p {
   position: relative;
   display: flex;
 }
-.top-page .featured-project-section .featured-project-list .featured-project-item:hover {
-  transform: translateY(-5px);
-}
 .top-page .featured-project-section .featured-project-list .featured-project-item .featured-project-item-img {
   position: relative;
   height: 320px;
@@ -1978,12 +2025,42 @@ p {
   background: var(--background-color-gradient);
   pointer-events: none;
   z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+}
+.top-page .featured-project-section .featured-project-list .featured-project-item .featured-project-item-img::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--background-color-gradient);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 .top-page .featured-project-section .featured-project-list .featured-project-item .featured-project-item-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s ease;
+}
+.top-page .featured-project-section .featured-project-list .featured-project-item:hover {
+  transform: translateY(-5px);
+}
+.top-page .featured-project-section .featured-project-list .featured-project-item:hover .featured-project-item-img::before {
+  opacity: 1;
+}
+.top-page .featured-project-section .featured-project-list .featured-project-item:hover .featured-project-item-img::after {
+  opacity: 0.3;
+}
+.top-page .featured-project-section .featured-project-list .featured-project-item:hover .featured-project-item-img img {
+  transform: scale(1.1);
+}
+.top-page .featured-project-section .featured-project-list .featured-project-item:hover .featured-project-item-content {
+  opacity: 1;
+  transform: translateY(-20px);
+  visibility: visible;
 }
 .top-page .featured-project-section .featured-project-list .featured-project-item .featured-project-item-content {
   position: absolute;
@@ -1997,6 +2074,10 @@ p {
   flex-direction: column;
   gap: 8px;
   min-height: 144px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
 }
 .top-page .featured-project-section .featured-project-list .featured-project-item .featured-project-item-content .featured-project-category {
   display: inline-block;

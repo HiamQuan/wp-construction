@@ -269,7 +269,6 @@
 
     .category-item {
       background: transparent;
-      border-radius: 8px;
       overflow: hidden;
       box-shadow: var(--box-shadow-base);
       transition: transform 0.3s ease;
@@ -284,7 +283,27 @@
         width: 100%;
         overflow: hidden;
         flex-shrink: 0;
-        filter: brightness(60%);
+        &::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 1;
+          opacity: 0;
+          transition:
+            opacity 0.3s ease,
+            background 0.3s ease;
+        }
+        &::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: var(--box-shadow-1);
+          pointer-events: none;
+          z-index: 1;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
         img {
           width: 100%;
           height: 100%;
@@ -292,37 +311,73 @@
           display: block;
           transition: transform 0.5s ease;
         }
+      }
 
-        &:hover {
+      &:hover {
+        transform: translateY(-5px);
+        .category-item-img {
+          &::before {
+            opacity: 1;
+          }
+          &::after {
+            opacity: 0.3;
+          }
           img {
             transform: scale(1.05);
+          }
+        }
+        .category-item-content {
+          opacity: 1;
+          transform: translateY(-20px);
+          visibility: visible;
+          &::after {
+            transform: scaleY(1);
           }
         }
       }
 
       .category-item-content {
         position: absolute;
-        bottom: 0;
+        bottom: -20px;
         left: 0;
         right: 0;
         z-index: 2;
-        background: var(--background-color-transparent);
         padding: 24px;
         display: flex;
         flex-direction: column;
         gap: 10px;
         min-height: 144px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition:
+          opacity 0.4s ease,
+          transform 0.4s ease,
+          visibility 0.4s ease;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 10px;
+          background-color: var(--text-color-primary-yellow);
+          transform: scaleY(0);
+          transform-origin: bottom;
+          transition: transform 0.4s ease 0.2s;
+        }
 
         h3 {
           font-size: var(--font-size-h4);
           font-weight: var(--font-weight-bold);
-          color: var(--text-color);
+          color: var(--text-color-white);
           line-height: 1.4;
         }
 
         p {
           font-size: var(--font-size-base);
-          color: var(--text-color-dark);
+          color: var(--text-color-white);
         }
       }
     }
@@ -460,10 +515,6 @@
         position: relative;
         display: flex;
 
-        &:hover {
-          transform: translateY(-5px);
-        }
-
         .featured-project-item-img {
           position: relative;
           height: 320px;
@@ -477,12 +528,47 @@
             background: var(--background-color-gradient);
             pointer-events: none;
             z-index: 1;
+            opacity: 0;
+            transition:
+              opacity 0.3s ease,
+              background 0.3s ease;
+          }
+          &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--background-color-gradient);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
           }
           img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.5s ease;
+          }
+        }
+
+        &:hover {
+          transform: translateY(-5px);
+          .featured-project-item-img {
+            &::before {
+              opacity: 1;
+            }
+            &::after {
+              opacity: 0.3;
+            }
+            img {
+              transform: scale(1.1);
+            }
+          }
+          .featured-project-item-content {
+            opacity: 1;
+            transform: translateY(-20px);
+            visibility: visible;
           }
         }
 
@@ -498,6 +584,13 @@
           flex-direction: column;
           gap: 8px;
           min-height: 144px;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(20px);
+          transition:
+            opacity 0.4s ease,
+            transform 0.4s ease,
+            visibility 0.4s ease;
 
           .featured-project-category {
             display: inline-block;
