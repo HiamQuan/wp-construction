@@ -18,24 +18,53 @@ get_header();
 
 <div class="top-page">
     <section class="banner-section">
-        <div class="banner-background">
-            <img src="<?php bloginfo('template_directory'); ?>/images/banner.png" alt="">
-        </div>
-        <div class="banner-content">
-            <h1>
-                THIẾT KẾ <br>
-                THI CÔNG XÂY <br>
-                DỰNG
-                <span class="text-primary">
-                    TRỌN GÓI
-                </span>
-            </h1>
-            <p>Chuyên nghiệp trong thi công, sáng tạo trong thiết kế và uy tín trong xây dựng</p>
-            <div class="contact">
-                <a href="#" class="btn btn-primary">Liên hệ ngay</a>
-                <a href="#" class="btn btn-secondary">Xem dự án</a>
+        <?php
+        $banner_slides = get_field('banner_slide');
+        $slide_count = is_array($banner_slides) ? count($banner_slides) : 0;
+        if (have_rows('banner_slide')) : ?>
+            <div class="banner-carousel owl-carousel owl-theme" id="banner-carousel" data-slide-count="<?php echo esc_attr($slide_count); ?>">
+                <?php
+                while (have_rows('banner_slide')) : the_row();
+                    $banner_media = get_sub_field('banner_slide_img');
+                    $banner_title = get_sub_field('banner_slide_title');
+                    $banner_subtitle = get_sub_field('banner_slide_subtitle');
+
+                    $banner_img_url = '';
+                ?>
+                    <div class="banner-slide item">
+                        <div class="banner-background" aria-hidden="true">
+                            <?php
+                            if ($banner_media && !empty($banner_media['url'])) {
+                                $mime_type = isset($banner_media['mime_type']) ? $banner_media['mime_type'] : '';
+
+                                if (strpos($mime_type, 'video') !== false) {
+                                    echo '<video class="banner-background__video" autoplay muted loop playsinline preload="auto">';
+                                    echo '<source src="' . esc_url($banner_media['url']) . '" type="' . esc_attr($mime_type) . '">';
+                                    echo '</video>';
+                                } else {
+                                    echo '<img src="' . esc_url($banner_media['url']) . '" alt="" loading="lazy" class="banner-background__image" />';
+                                }
+                            }
+                            ?>
+                        </div>
+                        <div class="banner-content">
+                            <?php if ($banner_title) : ?>
+                                <h1><?php echo wp_kses_post($banner_title); ?></h1>
+                            <?php endif; ?>
+                            <?php if ($banner_subtitle) : ?>
+                                <div class="banner-content__subtitle"><?php echo wp_kses_post($banner_subtitle); ?></div>
+                            <?php endif; ?>
+                            <div class="contact">
+                                <a href="#" class="btn btn-primary">Liên hệ ngay</a>
+                                <a href="#" class="btn btn-secondary">Xem dự án</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                endwhile;
+                ?>
             </div>
-        </div>
+        <?php endif; ?>
     </section>
     <section class="service-section">
         <div class="service-content">
@@ -141,13 +170,7 @@ get_header();
             <a href="#" class="btn btn-primary">Xem tất cả dự án</a>
         </div>
     </section>
-    <section class="project-section">
-        <div class="project-content">
-            <h2>Bạn có dự án cần tư vấn?</h2>
-            <p>Hãy liên hệ với chúng tôi ngay hôm nay để được tư vấn miễn phí và nhận báo giá chi tiết cho dự án của bạn.</p>
-            <a href="#" class="btn btn-primary">Liên hệ ngay</a>
-        </div>
-    </section>
+    <?php get_template_part('template-parts/project-consultation'); ?>
     <section class="featured-project-section">
         <div class="featured-project-content">
             <span class="featured-project-label">Dự án tiêu biểu</span>
@@ -198,58 +221,81 @@ get_header();
         </div>
     </section>
     <section class="about-us-section">
+        <?php
+        $introduce_banner = get_field('introduce_banner');
+        $introduce_banner_badge = get_field('introduce_banner_badge');
+        $introduce_label = get_field('introduce_label');
+        $introduce_title = get_field('introduce_title');
+        $introduce_desc = get_field('introduce_desc');
+        $introduce_items = get_field('introduce_item');
+        ?>
         <div class="about-container">
             <div class="about-media">
                 <div class="about-media-inner">
-                    <img src="<?php bloginfo('template_directory'); ?>/images/about.png" alt="Về chúng tôi">
-                    <div class="about-badge">
-                        <div class="about-badge-number">10+</div>
-                        <div class="about-badge-text">Năm kinh nghiệm</div>
+                    <div class="about-media-wrapper">
+                        <?php
+                        if ($introduce_banner && is_array($introduce_banner)) {
+                            $mime_type = isset($introduce_banner['mime_type']) ? $introduce_banner['mime_type'] : '';
+                            $banner_url = isset($introduce_banner['url']) ? $introduce_banner['url'] : '';
+                            if ($banner_url) {
+                                if (strpos($mime_type, 'video') !== false) {
+                                    echo '<video class="about-media-video" autoplay muted loop playsinline preload="auto">';
+                                    echo '<source src="' . esc_url($banner_url) . '" type="' . esc_attr($mime_type) . '">';
+                                    echo '</video>';
+                                } else {
+                                    $banner_alt = isset($introduce_banner['alt']) && $introduce_banner['alt'] ? $introduce_banner['alt'] : 'Về chúng tôi';
+                                    echo '<img src="' . esc_url($banner_url) . '" alt="' . esc_attr($banner_alt) . '">';
+                                }
+                            }
+                        } else {
+                            echo '<img src="' . get_template_directory_uri() . '/images/about.png" alt="Về chúng tôi">';
+                        }
+                        ?>
                     </div>
+                    <?php if ($introduce_banner_badge) : ?>
+                        <div class="about-badge">
+                            <?php echo wp_kses_post($introduce_banner_badge); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="about-content">
-                <span class="about-label">Về chúng tôi</span>
-                <h2>Công ty Hoàng Nhật Minh</h2>
-                <p>Được thành lập từ năm 2013, Hoàng Nhật Minh đã trở thành một trong những đơn vị hàng đầu trong lĩnh vực thi công, xây dựng và thiết kế công trình tại Việt Nam. Chúng tôi tự hào mang đến những giải pháp xây dựng toàn diện, kết hợp giữa công nghệ hiện đại và kinh nghiệm dày dạn.</p>
-                <div class="about-features">
-                    <div class="about-feature">
-                        <div class="about-feature-box">
-                            <span class="about-feature-icon"><i class="fa-solid fa-shield"></i></span>
-                        </div>
-                        <div class="about-feature-text">
-                            <strong>Chất lượng</strong>
-                            <span>Đảm bảo tiêu chuẩn</span>
-                        </div>
+                <?php if ($introduce_label) : ?>
+                    <span class="about-label"><?php echo esc_html($introduce_label); ?></span>
+                <?php endif; ?>
+                <?php if ($introduce_title) : ?>
+                    <h2><?php echo esc_html($introduce_title); ?></h2>
+                <?php endif; ?>
+                <?php if ($introduce_desc) : ?>
+                    <p><?php echo esc_html($introduce_desc); ?></p>
+                <?php endif; ?>
+                <?php if (is_array($introduce_items) && !empty($introduce_items)) : ?>
+                    <div class="about-features">
+                        <?php foreach ($introduce_items as $item) :
+                            $item_icon = isset($item['introduce_item_icon']) ? $item['introduce_item_icon'] : '';
+                            $item_title = isset($item['introduce_item_title']) ? $item['introduce_item_title'] : '';
+                            $item_desc = isset($item['introduce_item_desc']) ? $item['introduce_item_desc'] : '';
+                        ?>
+                            <div class="about-feature">
+                                <div class="about-feature-box">
+                                    <?php if ($item_icon && is_array($item_icon) && isset($item_icon['url'])) : ?>
+                                        <span class="about-feature-icon">
+                                            <img src="<?php echo esc_url($item_icon['url']); ?>" alt="<?php echo esc_attr(isset($item_icon['alt']) && $item_icon['alt'] ? $item_icon['alt'] : ($item_title ? $item_title : '')); ?>">
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="about-feature-text">
+                                    <?php if ($item_title) : ?>
+                                        <strong><?php echo esc_html($item_title); ?></strong>
+                                    <?php endif; ?>
+                                    <?php if ($item_desc) : ?>
+                                        <span><?php echo esc_html($item_desc); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
-                    <div class="about-feature">
-                        <div class="about-feature-box">
-                            <span class="about-feature-icon"><i class="fa-solid fa-stopwatch"></i></span>
-                        </div>
-                        <div class="about-feature-text">
-                            <strong>Đúng tiến độ</strong>
-                            <span>Cam kết thời gian</span>
-                        </div>
-                    </div>
-                    <div class="about-feature">
-                        <div class="about-feature-box">
-                            <span class="about-feature-icon"><i class="fa-solid fa-lightbulb"></i></span>
-                        </div>
-                        <div class="about-feature-text">
-                            <strong>Sáng tạo</strong>
-                            <span>Thiết kế độc đáo</span>
-                        </div>
-                    </div>
-                    <div class="about-feature">
-                        <div class="about-feature-box">
-                            <span class="about-feature-icon"><i class="fa-solid fa-headset"></i></span>
-                        </div>
-                        <div class="about-feature-text">
-                            <strong>Tư vấn tận tâm</strong>
-                            <span>Hỗ trợ 24/7</span>
-                        </div>
-                    </div>
-                </div>
+                <?php endif; ?>
                 <a href="#" class="about-link">Tìm hiểu thêm <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
@@ -275,64 +321,58 @@ get_header();
         </div>
     </section>
     <section class="testimonials-section">
+        <?php
+        $evaluate_label = get_field('evaluate_label');
+        $evaluate_title = get_field('evaluate_title');
+        $evaluate_desc = get_field('evaluate_desc');
+        $evaluate_items = get_field('evaluate_item');
+        ?>
         <div class="testimonials-content">
-            <span class="testimonials-label">Khách hàng nói gì</span>
-            <h2>Đánh giá từ khách hàng</h2>
-            <p>Sự hài lòng của khách hàng là thước đo thành công của chúng tôi. Hãy xem những gì họ nói về dịch vụ của Hoàng Nhật Minh.</p>
+            <?php if ($evaluate_label) : ?>
+                <span class="testimonials-label"><?php echo esc_html($evaluate_label); ?></span>
+            <?php endif; ?>
+            <?php if ($evaluate_title) : ?>
+                <h2><?php echo esc_html($evaluate_title); ?></h2>
+            <?php endif; ?>
+            <?php if ($evaluate_desc) : ?>
+                <p><?php echo esc_html($evaluate_desc); ?></p>
+            <?php endif; ?>
         </div>
-        <div class="testimonials-list">
-            <div class="testimonial-item">
-                <div class="testimonial-rating">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                </div>
-                <p class="testimonial-quote">"Hoàng Nhật Minh đã hoàn thành dự án tòa nhà văn phòng của chúng tôi đúng tiến độ và chất lượng vượt mong đợi. Đội ngũ chuyên nghiệp và tận tâm."</p>
-                <div class="testimonial-author">
-                    <img src="<?php bloginfo('template_directory'); ?>/images/avatar-1.png" alt="Nguyễn Văn An" class="author-avatar">
-                    <div class="author-meta">
-                        <strong>Nguyễn Văn An</strong>
-                        <span>Giám đốc Công ty ABC</span>
+        <?php if (is_array($evaluate_items) && !empty($evaluate_items)) : ?>
+            <div class="testimonials-list">
+                <?php foreach ($evaluate_items as $item) :
+                    $item_star = isset($item['evaluate_item_star']) ? intval($item['evaluate_item_star']) : 5;
+                    $item_quote = isset($item['evaluate_item_quote']) ? $item['evaluate_item_quote'] : '';
+                    $item_avatar = isset($item['evaluate_item_avatar']) ? $item['evaluate_item_avatar'] : '';
+                    $item_name = isset($item['evaluate_item_name']) ? $item['evaluate_item_name'] : '';
+                ?>
+                    <div class="testimonial-item">
+                        <div class="testimonial-rating">
+                            <?php
+                            $star_count = min(max($item_star, 0), 5);
+                            for ($i = 0; $i < 5; $i++) :
+                                $star_class = $i < $star_count ? 'fa-solid' : 'fa-regular';
+                            ?>
+                                <i class="<?php echo esc_attr($star_class); ?> fa-star"></i>
+                            <?php endfor; ?>
+                        </div>
+                        <?php if ($item_quote) : ?>
+                            <p class="testimonial-quote"><?php echo esc_html($item_quote); ?></p>
+                        <?php endif; ?>
+                        <div class="testimonial-author">
+                            <?php if ($item_avatar && is_array($item_avatar) && isset($item_avatar['url'])) : ?>
+                                <img src="<?php echo esc_url($item_avatar['url']); ?>" alt="<?php echo esc_attr(isset($item_avatar['alt']) && $item_avatar['alt'] ? $item_avatar['alt'] : ($item_name ? $item_name : '')); ?>" class="author-avatar">
+                            <?php endif; ?>
+                            <?php if ($item_name) : ?>
+                                <div class="author-meta">
+                                    <strong><?php echo esc_html($item_name); ?></strong>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
             </div>
-            <div class="testimonial-item">
-                <div class="testimonial-rating">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                </div>
-                <p class="testimonial-quote">"Tôi đánh giá cao sự sáng tạo và chuyên nghiệp của đội ngũ thiết kế Hoàng Nhật Minh. Họ đã biến ý tưởng của tôi thành hiện thực một cách hoàn hảo."</p>
-                <div class="testimonial-author">
-                    <img src="<?php bloginfo('template_directory'); ?>/images/avatar-2.png" alt="Trần Thị Mai" class="author-avatar">
-                    <div class="author-meta">
-                        <strong>Trần Thị Mai</strong>
-                        <span>Chủ đầu tư Dự án XYZ</span>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-item">
-                <div class="testimonial-rating">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                </div>
-                <p class="testimonial-quote">"Làm việc với Hoàng Nhật Minh là một trải nghiệm tuyệt vời. Họ luôn lắng nghe ý kiến và đưa ra những giải pháp tối ưu cho dự án của chúng tôi."</p>
-                <div class="testimonial-author">
-                    <img src="<?php bloginfo('template_directory'); ?>/images/avatar-3.png" alt="Lê Minh Tuấn" class="author-avatar">
-                    <div class="author-meta">
-                        <strong>Lê Minh Tuấn</strong>
-                        <span>Quản lý Dự án 123</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php endif; ?>
     </section>
     <section class="process-section">
         <div class="process-content">
@@ -387,7 +427,7 @@ get_header();
             <?php echo do_shortcode('[contact-form-7 id="2b633c3" title="Contact form 1"]'); ?>
             <aside class="contact-info">
                 <h3>Thông tin liên hệ</h3>
-                <ul class="contact-info-list">  
+                <ul class="contact-info-list">
                     <li>
                         <span class="info-icon"><i class="fa-solid fa-location-dot"></i></span>
                         <div>
