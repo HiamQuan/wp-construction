@@ -167,6 +167,14 @@ function construction_scripts()
 	);
 
 	wp_enqueue_script(
+		'banner-carousel',
+		get_template_directory_uri() . '/js/banner-carousel.js',
+		array('jquery', 'owlcarousel'),
+		_S_VERSION,
+		true
+	);
+
+	wp_enqueue_script(
 		'main',
 		get_template_directory_uri() . '/js/main.js',
 		array(),

@@ -28,57 +28,86 @@
   .banner-section {
     position: relative;
     z-index: 1;
-    padding: 170px 80px 0px;
     height: 100vh;
+    overflow: hidden;
 
-    @include media_mobile {
-      padding: 120px 20px 0px;
-    }
-    .banner-background {
-      @include position(absolute, 0, 0, 0, 0);
-      z-index: -1;
-      overflow: hidden;
+    .banner-carousel {
       height: 100%;
-      width: 100%;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
 
-    .banner-content {
-      position: relative;
-      z-index: 1;
-      max-width: 650px;
-      @include media_mobile {
-        max-width: 100%;
-      }
-      h1 {
-        font-size: var(--font-size-xxl);
-        font-weight: var(--font-weight-bold);
-        margin: 0 16px 11px;
-        color: var(--text-color-white);
-        text-transform: uppercase;
-        @include media_mobile {
-          font-size: var(--font-size-h1);
-        }
-      }
-
-      p {
-        font-size: var(--font-size-h3);
-        color: var(--text-color-white);
-        margin: 0 16px 27px;
-        @include media_mobile {
-          font-size: var(--font-size-medium);
-        }
-      }
-
-      .contact {
+      .banner-slide {
+        position: relative;
+        height: 100vh;
+        padding: 170px 80px 0px;
         display: flex;
         align-items: center;
-        gap: 16px;
+
+        @include media_mobile {
+          padding: 120px 20px 0px;
+        }
+
+        .banner-background {
+          @include position(absolute, 0, 0, 0, 0);
+          z-index: -1;
+          overflow: hidden;
+          height: 100%;
+          width: 100%;
+          video,
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+          }
+
+          video {
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+        }
+
+        .banner-content {
+          position: relative;
+          z-index: 1;
+          max-width: 650px;
+          @include media_mobile {
+            max-width: 100%;
+          }
+          h1 {
+            font-size: var(--font-size-xxl);
+            font-weight: var(--font-weight-bold);
+            margin: 0 16px 11px;
+            color: var(--text-color-white);
+            text-transform: uppercase;
+            @include media_mobile {
+              font-size: var(--font-size-h1);
+            }
+          }
+
+          &__subtitle {
+            font-size: var(--font-size-h3);
+            color: var(--text-color-white);
+            margin: 0 16px 27px;
+            @include media_mobile {
+              font-size: var(--font-size-medium);
+            }
+          }
+
+          .contact {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+          }
+        }
       }
+    }
+
+    .owl-nav {
+      display: none;
+    }
+
+    .owl-dots {
+      display: none;
     }
   }
 
@@ -639,7 +668,7 @@
 
     .about-container {
       display: grid;
-      grid-template-columns: 1.08334fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 48px;
       align-items: end;
       padding: 0 16px;
@@ -651,12 +680,32 @@
     .about-media {
       .about-media-inner {
         position: relative;
+        width: 100%;
 
-        img {
+        .about-media-wrapper {
+          position: relative;
           width: 100%;
-          height: auto;
-          display: block;
-          object-fit: cover;
+          overflow: hidden;
+          max-height: 408px;
+
+          img,
+          video {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+          }
+
+          video.about-media-video {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+            object-position: center;
+          }
         }
 
         .about-badge {
@@ -670,6 +719,8 @@
           display: inline-flex;
           flex-direction: column;
           color: var(--text-color-black-1);
+          z-index: 10;
+          pointer-events: auto;
           .about-badge-number {
             font-size: var(--font-size-h2);
             font-weight: var(--font-weight-bold);
@@ -771,6 +822,14 @@
               background: var(--background-color-primary-yellow-30);
               @include center_flex;
               z-index: 10;
+              overflow: hidden;
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                padding: 8px;
+              }
 
               i {
                 transition: all 0.3s ease;
@@ -1070,7 +1129,7 @@
       transform: translateY(30px);
 
       &.animate-in {
-        animation: fadeInUp 2s ease-out forwards;
+        animation: fadeInUp 1s ease-out forwards;
         transition: transform 0.3s ease;
 
         &:hover {
@@ -1079,19 +1138,19 @@
       }
 
       &:nth-child(1).animate-in {
-        animation-delay: 0.1s;
+        animation-delay: 0s;
       }
 
       &:nth-child(2).animate-in {
-        animation-delay: 0.2s;
+        animation-delay: 1s;
       }
 
       &:nth-child(3).animate-in {
-        animation-delay: 0.3s;
+        animation-delay: 2s;
       }
 
       &:nth-child(4).animate-in {
-        animation-delay: 0.4s;
+        animation-delay: 3s;
       }
 
       .process-item-icon {
