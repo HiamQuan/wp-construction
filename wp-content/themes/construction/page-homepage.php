@@ -115,59 +115,111 @@ get_header();
     </section>
     <section class="category-section">
         <div class="category-content">
-            <h2>Danh mục dự án</h2>
-            <p>Khám phá các dự án nổi bật của Hoàng Nhật Minh trong các lĩnh vực thiết kế và thi công.</p>
+            <h2>Sản phẩm</h2>
+            <p>Khám phá các sản phẩm nổi bật mà Hoàng Nhật Minh cung cấp cho khách hàng.</p>
         </div>
         <div class="category-list-wrapper">
+            <?php
+            $product_categories = get_terms(
+                array(
+                    'taxonomy'   => 'category',
+                    'hide_empty' => false,
+                )
+            );
+            ?>
             <div class="owl-carousel owl-theme category-carousel" id="category-swiper">
-                <div class="item">
-                    <div class="category-item">
-                        <div class="category-item-img">
-                            <img src="<?php bloginfo('template_directory'); ?>/images/category-1.png" alt="Nhà phố">
+                <?php if (!empty($product_categories) && !is_wp_error($product_categories)) : ?>
+                    <?php foreach ($product_categories as $term) : ?>
+                        <?php
+                        $image_url = get_term_meta($term->term_id, 'construction_category_image', true);
+
+                        if (empty($image_url)) {
+                            $term_product = new WP_Query(
+                                array(
+                                    'post_type'      => 'construction_product',
+                                    'posts_per_page' => 1,
+                                    'tax_query'      => array(
+                                        array(
+                                            'taxonomy' => 'category',
+                                            'field'    => 'term_id',
+                                            'terms'    => $term->term_id,
+                                        ),
+                                    ),
+                                )
+                            );
+
+                            if ($term_product->have_posts()) {
+                                $term_product->the_post();
+                                $image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                                wp_reset_postdata();
+                            }
+                        }
+
+                        $title = $term->name;
+                        $desc  = $term->description ? $term->description : '';
+                        if (empty($desc)) {
+                            $desc = sprintf(__('Các sản phẩm thuộc danh mục %s', 'construction'), $term->name);
+                        }
+                        ?>
+                        <div class="item">
+                            <div class="category-item">
+                                <div class="category-item-img">
+                                    <?php if ($image_url) : ?>
+                                        <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($title); ?>">
+                                    <?php else : ?>
+                                        <img src="<?php bloginfo('template_directory'); ?>/images/category-1.png" alt="<?php echo esc_attr($title ? $title : 'Sản phẩm'); ?>">
+                                    <?php endif; ?>
+                                </div>
+                                <div class="category-item-content">
+                                    <?php if ($title) : ?>
+                                        <h3><?php echo esc_html($title); ?></h3>
+                                    <?php endif; ?>
+                                    <?php if ($desc) : ?>
+                                        <p><?php echo esc_html($desc); ?></p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
-                        <div class="category-item-content">
-                            <h3>Nhà phố</h3>
-                            <p>Thiết kế và thi công nhà phố hiện đại, tiện nghi</p>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <div class="item">
+                        <div class="category-item">
+                            <div class="category-item-img">
+                                <img src="<?php bloginfo('template_directory'); ?>/images/category-1.png" alt="Sản phẩm 1">
+                            </div>
+                            <div class="category-item-content">
+                                <h3>Sản phẩm 1</h3>
+                                <p>Mô tả ngắn về sản phẩm tiêu biểu của Hoàng Nhật Minh.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="item">
-                    <div class="category-item">
-                        <div class="category-item-img">
-                            <img src="<?php bloginfo('template_directory'); ?>/images/category-2.png" alt="Nội thất">
-                        </div>
-                        <div class="category-item-content">
-                            <h3>Nội thất</h3>
-                            <p>Thiết kế nội thất hiện đại, tinh tế</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="category-item">
-                        <div class="category-item-img">
-                            <img src="<?php bloginfo('template_directory'); ?>/images/category-3.png" alt="Phòng thờ">
-                        </div>
-                        <div class="category-item-content">
-                            <h3>Phòng thờ</h3>
-                            <p>Thiết kế phòng thờ trang nghiêm, thanh tịnh</p>
+                    <div class="item">
+                        <div class="category-item">
+                            <div class="category-item-img">
+                                <img src="<?php bloginfo('template_directory'); ?>/images/category-2.png" alt="Sản phẩm 2">
+                            </div>
+                            <div class="category-item-content">
+                                <h3>Sản phẩm 2</h3>
+                                <p>Mô tả ngắn về sản phẩm tiêu biểu của Hoàng Nhật Minh.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="item">
-                    <div class="category-item">
-                        <div class="category-item-img">
-                            <img src="<?php bloginfo('template_directory'); ?>/images/category-3.png" alt="Phòng thờ">
-                        </div>
-                        <div class="category-item-content">
-                            <h3>Phòng thờ</h3>
-                            <p>Thiết kế phòng thờ trang nghiêm, thanh tịnh</p>
+                    <div class="item">
+                        <div class="category-item">
+                            <div class="category-item-img">
+                                <img src="<?php bloginfo('template_directory'); ?>/images/category-3.png" alt="Sản phẩm 3">
+                            </div>
+                            <div class="category-item-content">
+                                <h3>Sản phẩm 3</h3>
+                                <p>Mô tả ngắn về sản phẩm tiêu biểu của Hoàng Nhật Minh.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
         <div class="category-btn">
-            <a href="#" class="btn btn-primary">Xem tất cả dự án</a>
+            <a href="#" class="btn btn-primary">Xem tất cả sản phẩm</a>
         </div>
     </section>
     <?php get_template_part('template-parts/project-consultation'); ?>
@@ -177,43 +229,97 @@ get_header();
             <h2>Những công trình đã thực hiện</h2>
             <p>Chúng tôi tự hào với hơn 200 dự án đã hoàn thành, đáp ứng đúng yêu cầu và vượt trên mong đợi của khách hàng.</p>
         </div>
+        <?php
+        $featured_projects = new WP_Query(
+            array(
+                'post_type'      => 'construction_product',
+                'posts_per_page' => 3,
+                'orderby'        => 'menu_order',
+                'order'          => 'ASC',
+            )
+        );
+        ?>
         <div class="featured-project-list owl-carousel owl-theme" id="featured-project-swiper">
-            <div class="item">
-                <div class="featured-project-item">
-                    <div class="featured-project-item-img">
-                        <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-1.png" alt="Dự án 1">
+            <?php if ($featured_projects->have_posts()) : ?>
+                <?php while ($featured_projects->have_posts()) : $featured_projects->the_post(); ?>
+                    <?php
+                    $fp_image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                    $fp_title     = get_the_title();
+                    $fp_tag_name  = '';
+                    $fp_location  = get_the_excerpt();
+
+                    // Lấy tag đầu tiên của sản phẩm để hiển thị
+                    $product_tags = get_the_terms(get_the_ID(), 'post_tag');
+                    if (!is_wp_error($product_tags) && !empty($product_tags)) {
+                        $fp_tag_name = $product_tags[0]->name;
+                    }
+
+                    if (empty($fp_location)) {
+                        $fp_location = wp_trim_words(wp_strip_all_tags(get_the_content('')), 15, '...');
+                    }
+                    ?>
+                    <div class="item">
+                        <div class="featured-project-item">
+                            <div class="featured-project-item-img">
+                                <?php if ($fp_image_url) : ?>
+                                    <img src="<?php echo esc_url($fp_image_url); ?>" alt="<?php echo esc_attr($fp_title); ?>">
+                                <?php else : ?>
+                                    <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-1.png" alt="<?php echo esc_attr($fp_title); ?>">
+                                <?php endif; ?>
+                            </div>
+                            <div class="featured-project-item-content">
+                                <?php if ($fp_tag_name) : ?>
+                                    <span class="featured-project-category"><?php echo esc_html($fp_tag_name); ?></span>
+                                <?php endif; ?>
+                                <?php if ($fp_title) : ?>
+                                    <h3><?php echo esc_html($fp_title); ?></h3>
+                                <?php endif; ?>
+                                <?php if ($fp_location) : ?>
+                                    <p><?php echo esc_html($fp_location); ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
                     </div>
-                    <div class="featured-project-item-content">
-                        <span class="featured-project-category">Tòa nhà văn phòng</span>
-                        <h3>Tòa nhà HNM Tower</h3>
-                        <p>Hà Nội, Việt Nam</p>
+                <?php endwhile; ?>
+                <?php wp_reset_postdata(); ?>
+            <?php else : ?>
+                <div class="item">
+                    <div class="featured-project-item">
+                        <div class="featured-project-item-img">
+                            <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-1.png" alt="Dự án 1">
+                        </div>
+                        <div class="featured-project-item-content">
+                            <span class="featured-project-category">Tòa nhà văn phòng</span>
+                            <h3>Tòa nhà HNM Tower</h3>
+                            <p>Hà Nội, Việt Nam</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="item">
-                <div class="featured-project-item">
-                    <div class="featured-project-item-img">
-                        <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-2.png" alt="Dự án 2">
-                    </div>
-                    <div class="featured-project-item-content">
-                        <span class="featured-project-category">Chung cư cao cấp</span>
-                        <h3>Minh Residence</h3>
-                        <p>TP. Hồ Chí Minh, Việt Nam</p>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <div class="featured-project-item">
-                    <div class="featured-project-item-img">
-                        <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-3.png" alt="Dự án 3">
-                    </div>
-                    <div class="featured-project-item-content">
-                        <span class="featured-project-category">Trung tâm thương mại</span>
-                        <h3>HNM Plaza</h3>
-                        <p>Đà Nẵng, Việt Nam</p>
+                <div class="item">
+                    <div class="featured-project-item">
+                        <div class="featured-project-item-img">
+                            <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-2.png" alt="Dự án 2">
+                        </div>
+                        <div class="featured-project-item-content">
+                            <span class="featured-project-category">Chung cư cao cấp</span>
+                            <h3>Minh Residence</h3>
+                            <p>TP. Hồ Chí Minh, Việt Nam</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="item">
+                    <div class="featured-project-item">
+                        <div class="featured-project-item-img">
+                            <img src="<?php bloginfo('template_directory'); ?>/images/featured-project-3.png" alt="Dự án 3">
+                        </div>
+                        <div class="featured-project-item-content">
+                            <span class="featured-project-category">Trung tâm thương mại</span>
+                            <h3>HNM Plaza</h3>
+                            <p>Đà Nẵng, Việt Nam</p>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
 
         <div class="featured-project-btn">
