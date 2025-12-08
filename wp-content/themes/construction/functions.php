@@ -188,6 +188,184 @@ function construction_scripts()
 }
 add_action('wp_enqueue_scripts', 'construction_scripts');
 
+function construction_register_home_cpts()
+{
+	register_post_type(
+		'construction_project',
+		array(
+			'labels'       => array(
+				'name'          => __('project', 'construction'),
+				'singular_name' => __('project', 'construction'),
+				'add_new'       => __('Add project', 'construction'),
+				'add_new_item'  => __('Add new project', 'construction'),
+				'edit_item'     => __('Edit project', 'construction'),
+				'all_items'     => __('All projects', 'construction'),
+			),
+			'public'       => true,
+			'show_ui'      => true,
+			'show_in_menu' => true,
+			'menu_icon'    => 'dashicons-portfolio',
+			'supports'     => array('title', 'editor', 'thumbnail', 'excerpt', 'page-attributes'),
+			'taxonomies'   => array('category', 'post_tag'),
+			'has_archive'  => false,
+			'rewrite'      => false,
+			'show_in_rest' => true,
+		)
+	);
+}
+add_action('init', 'construction_register_home_cpts');
+
+
+/**
+ * Category thumbnail (image URL) meta for project categories.
+ * Allows setting a separate image per category, independent of projects.
+ */
+function construction_category_add_thumbnail_field($taxonomy)
+{
+?>
+	<div class="form-field term-group">
+		<label for="construction_category_image"><?php esc_html_e('Category image URL', 'construction'); ?></label>
+		<input type="hidden" id="construction_category_image" name="construction_category_image" value="" class="widefat" />
+		<p>
+			<button type="button" class="button construction-category-image-upload"><?php esc_html_e('Select image', 'construction'); ?></button>
+		</p>
+		<div class="construction-category-image-preview" style="margin-top:10px; display:none;">
+			<img src="" alt="<?php esc_attr_e('Category preview', 'construction'); ?>" style="max-width:150px;height:auto;" />
+		</div>
+		<p class="description"><?php esc_html_e('Select image from Media Library or paste image URL to use as category thumbnail.', 'construction'); ?></p>
+	</div>
+<?php
+}
+add_action('category_add_form_fields', 'construction_category_add_thumbnail_field');
+
+function construction_category_edit_thumbnail_field($term, $taxonomy)
+{
+	$image_url = get_term_meta($term->term_id, 'construction_category_image', true);
+?>
+	<tr class="form-field term-group-wrap">
+		<th scope="row">
+			<label for="construction_category_image"><?php esc_html_e('Category image URL', 'construction'); ?></label>
+		</th>
+		<td>
+			<input type="hidden" id="construction_category_image" name="construction_category_image" value="<?php echo esc_attr($image_url); ?>" class="regular-text" />
+			<p>
+				<button type="button" class="button construction-category-image-upload"><?php esc_html_e('Select image', 'construction'); ?></button>
+				<button type="button" class="button construction-category-image-remove"><?php esc_html_e('Remove image', 'construction'); ?></button>
+			</p>
+			<div class="construction-category-image-preview" style="margin-top:10px;<?php echo $image_url ? '' : ' display:none;'; ?>">
+				<?php if ($image_url) : ?>
+					<img src="<?php echo esc_url($image_url); ?>" alt="<?php esc_attr_e('Category preview', 'construction'); ?>" style="max-width:150px;height:auto;" />
+				<?php else : ?>
+					<img src="" alt="<?php esc_attr_e('Category preview', 'construction'); ?>" style="max-width:150px;height:auto;" />
+				<?php endif; ?>
+			</div>
+			<p class="description"><?php esc_html_e('Select image from Media Library or paste image URL to use as category thumbnail.', 'construction'); ?></p>
+		</td>
+	</tr>
+<?php
+}
+add_action('category_edit_form_fields', 'construction_category_edit_thumbnail_field', 10, 2);
+
+function construction_save_category_thumbnail_meta($term_id)
+{
+	if (isset($_POST['construction_category_image'])) {
+		$image_url = sanitize_text_field(wp_unslash($_POST['construction_category_image']));
+		if ($image_url) {
+			update_term_meta($term_id, 'construction_category_image', $image_url);
+		} else {
+			delete_term_meta($term_id, 'construction_category_image');
+		}
+	}
+}
+add_action('created_category', 'construction_save_category_thumbnail_meta', 10, 2);
+add_action('edited_category', 'construction_save_category_thumbnail_meta', 10, 2);
+
+
+/**
+ * Admin scripts for category image picker.
+ */
+function construction_admin_category_media_scripts($hook)
+{
+	if ('edit-tags.php' !== $hook && 'term.php' !== $hook) {
+		return;
+	}
+
+	$taxonomy = isset($_GET['taxonomy']) ? sanitize_key(wp_unslash($_GET['taxonomy'])) : '';
+	if ('category' !== $taxonomy) {
+		return;
+	}
+
+	wp_enqueue_media();
+	wp_enqueue_script(
+		'construction-category-media',
+		get_template_directory_uri() . '/js/category-media.js',
+		array('jquery'),
+		_S_VERSION,
+		true
+	);
+}
+add_action('admin_enqueue_scripts', 'construction_admin_category_media_scripts');
+
+
+function construction_add_featured_project_meta_boxes()
+{
+	add_meta_box(
+		'construction_featured_project_info',
+		__('Thông tin dự án', 'construction'),
+		'construction_render_featured_project_meta_box',
+		'construction_project',
+		'side',
+		'default'
+	);
+}
+add_action('add_meta_boxes', 'construction_add_featured_project_meta_boxes');
+
+function construction_render_featured_project_meta_box($post)
+{
+	wp_nonce_field('construction_save_featured_project_meta', 'construction_featured_project_nonce');
+
+	$category = get_post_meta($post->ID, 'featured_project_category', true);
+	$location = get_post_meta($post->ID, 'featured_project_location', true);
+?>
+	<p>
+		<label for="featured_project_category"><strong><?php esc_html_e('Loại dự án', 'construction'); ?></strong></label>
+		<input type="text" id="featured_project_category" name="featured_project_category" class="widefat"
+			value="<?php echo esc_attr($category); ?>" placeholder="<?php esc_attr_e('Ví dụ: Tòa nhà văn phòng', 'construction'); ?>">
+	</p>
+	<p>
+		<label for="featured_project_location"><strong><?php esc_html_e('Địa điểm', 'construction'); ?></strong></label>
+		<input type="text" id="featured_project_location" name="featured_project_location" class="widefat"
+			value="<?php echo esc_attr($location); ?>" placeholder="<?php esc_attr_e('Ví dụ: Hà Nội, Việt Nam', 'construction'); ?>">
+	</p>
+<?php
+}
+
+function construction_save_featured_project_meta($post_id)
+{
+	if (!isset($_POST['construction_featured_project_nonce']) || !wp_verify_nonce($_POST['construction_featured_project_nonce'], 'construction_save_featured_project_meta')) {
+		return;
+	}
+
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+		return;
+	}
+
+	if (!current_user_can('edit_post', $post_id)) {
+		return;
+	}
+
+	if (get_post_type($post_id) !== 'construction_project') {
+		return;
+	}
+
+	$category = isset($_POST['featured_project_category']) ? sanitize_text_field(wp_unslash($_POST['featured_project_category'])) : '';
+	$location = isset($_POST['featured_project_location']) ? sanitize_text_field(wp_unslash($_POST['featured_project_location'])) : '';
+
+	update_post_meta($post_id, 'featured_project_category', $category);
+	update_post_meta($post_id, 'featured_project_location', $location);
+}
+add_action('save_post_construction_project', 'construction_save_featured_project_meta');
+
 /**
  * Implement the Custom Header feature.
  */
